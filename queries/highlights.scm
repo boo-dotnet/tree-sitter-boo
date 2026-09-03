@@ -97,8 +97,9 @@
 (timespan) @number
 (boolean) @constant.builtin.boolean
 (null) @constant.builtin
-(regex) @string.regexp
-(escape_sequence) @constant.character.escape
+; Helix and Neovim say regexp, Zed says regex.
+(regex) @string.regexp @string.regex
+(escape_sequence) @constant.character.escape @string.escape
 (string) @string
 (docstring) @string.documentation
 [ "${" "$(" ] @punctuation.special
@@ -120,9 +121,9 @@
 (constructor "constructor" @constructor)
 (destructor "destructor" @constructor)
 
-(property_definition name: (identifier) @variable.other.member)
-(field name: (identifier) @variable.other.member)
-(event_declaration name: (identifier) @variable.other.member)
+(property_definition name: (identifier) @variable.other.member @property)
+(field name: (identifier) @variable.other.member @property)
+(event_declaration name: (identifier) @variable.other.member @property)
 
 (parameter name: (identifier) @variable.parameter)
 (generic_parameter name: (identifier) @type.parameter)
@@ -153,11 +154,12 @@
 
 (call function: (identifier) @function)
 (call function: (member_access member: (identifier) @function.method))
-(member_access member: (identifier) @variable.other.member)
+(member_access member: (identifier) @variable.other.member @property)
 (named_argument name: (identifier) @variable.parameter)
-(key_value key: (identifier) @variable.other.member)
+(key_value key: (identifier) @variable.other.member @property)
 
-(namespace_directive name: (qualified_name (identifier) @namespace))
-(import_directive name: (qualified_name (identifier) @namespace))
+; Helix themes @namespace, Neovim themes @module. Each ignores the other.
+(namespace_directive name: (qualified_name (identifier) @namespace @module))
+(import_directive name: (qualified_name (identifier) @namespace @module))
 
 (identifier) @variable

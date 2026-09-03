@@ -59,19 +59,32 @@ close.
 
 ## Parse rate
 
-`tree-sitter parse -s <files>` reports a parse-success percentage, which is the
-number to watch when changing the grammar. The corpus is every `.boo` file in
-the compiler repository, so point it at a checkout:
+The share of the compiler's `.boo` files that parse clean is the number to watch
+when changing the grammar. Point the script at a checkout:
 
-    BOO=../boo
-    npx tree-sitter parse -q -s $(fd -t f -e boo . \
-      $BOO/examples $BOO/src $BOO/tests $BOO/scripts $BOO/extras)
+    scripts/parse-rate.sh ../boo
 
 Nothing is excluded. `tests/testcases/errors` is in the count because its files
 carry semantic errors, not syntax errors, and so are expected to parse.
 
-CI runs this on every push and fails if the rate drops below the floor in
-`.github/workflows/ci.yml`.
+CI runs this on every push and fails below the floor in `parse-rate.sh`.
+
+## Running CI locally
+
+`scripts/ci.sh` is what the workflow runs. It takes a compiler checkout, or
+clones one if you do not pass a path:
+
+    scripts/ci.sh ../boo
+
+`Dockerfile.ci` runs the same thing in a container, so no Node or compiler has
+to be installed on the host:
+
+    podman build -f Dockerfile.ci -t tree-sitter-boo-ci .
+    podman run --rm -v "$PWD/../boo:/work/boo:ro" tree-sitter-boo-ci
+
+Without the mount it clones the compiler itself. The base is glibc rather than
+musl because the published tree-sitter-cli binaries are linked against glibc,
+and building it from source costs minutes.
 
 ## Helix
 

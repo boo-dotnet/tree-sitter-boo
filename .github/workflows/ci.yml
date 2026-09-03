@@ -11,10 +11,6 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  # Raise when the grammar improves. A drop fails the build.
-  PARSE_RATE_FLOOR: '98.6'
-
 jobs:
   test:
     name: ${{ matrix.os }}
@@ -23,14 +19,16 @@ jobs:
       # One platform failing should not hide the state of the others.
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        # MSVC is the one compiler that rejects C the others accept, and a
+        # Helix user on Windows compiles src/scanner.c themselves.
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: latest
           cache: npm
 
       - run: npm ci
@@ -39,9 +37,7 @@ jobs:
       # checkout and reports the whole file as changed.
       - name: Generated parser is up to date
         if: matrix.os == 'ubuntu-latest'
-        run: |
-          npx tree-sitter generate
-          git diff --exit-code -- src/
+        run: ./scripts/check-generated.sh
 
       # Compiles src/scanner.c, the only hand-written C here.
       - name: Test
@@ -59,7 +55,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: latest
           cache: npm
 
       - run: npm ci
@@ -69,25 +65,4 @@ jobs:
         run: git clone --depth 1 https://github.com/mattmc3/boo boo
 
       - name: Parse rate
-        run: |
-          find boo/examples boo/src boo/tests boo/scripts boo/extras \
-            -type f -name '*.boo' > corpus.txt
-          echo "corpus: $(wc -l < corpus.txt) files"
-          # Exits non-zero if any one file fails, so the gate reads the
-          # percentage instead.
-          npx tree-sitter parse -q -s $(cat corpus.txt) > report.txt 2>/dev/null || true
-          tail -1 report.txt
-          rate=$(sed -n 's/.*success percentage: \([0-9.]*\)%.*/\1/p' report.txt)
-          if [ -z "$rate" ]; then
-            echo "::error::could not read a parse rate from the report"
-            exit 1
-          fi
-          echo "parse rate: $rate%, floor $PARSE_RATE_FLOOR%"
-          awk -v r="$rate" -v f="$PARSE_RATE_FLOOR" 'BEGIN { exit !(r + 0 >= f + 0) }' || {
-            echo "::error::parse rate $rate% is below the $PARSE_RATE_FLOOR% floor"
-            exit 1
-          }
-
-      - name: List the files that failed
-        if: always()
-        run: npx tree-sitter parse -q $(cat corpus.txt) 2>/dev/null || true
+        run: ./scripts/parse-rate.sh boo

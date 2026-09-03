@@ -15,7 +15,7 @@ fi
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 
-find "$boo" -type f -name '*.boo' -print0 | sort -z > "$work/files"
+find "$boo" -type f -name '*.boo' -print0 > "$work/files"
 total=$(tr -dc '\0' < "$work/files" | wc -c | tr -d ' ')
 
 if [ "$total" -eq 0 ]; then

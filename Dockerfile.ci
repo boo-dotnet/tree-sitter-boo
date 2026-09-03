@@ -1,18 +1,14 @@
-# Runs the CI checks in a container, so a local run matches the workflow
-# without a Node or compiler install on the host.
-FROM node:slim
+# Runs the CI checks in a container, so a local run needs no Node or compiler
+# on the host.
+FROM alpine:3
 
-# gcc builds src/parser.c and src/scanner.c. git is for the drift check and for
-# cloning the compiler corpus.
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends gcc libc6-dev git \
-	&& rm -rf /var/lib/apt/lists/*
+# tree-sitter-cli comes from apk because the published npm binaries are linked
+# against glibc. node stays because tree-sitter generate evaluates grammar.js.
+RUN apk add --no-cache bash git gcc musl-dev nodejs tree-sitter-cli
+
+ENV TREE_SITTER=tree-sitter
 
 WORKDIR /work
-
-COPY package.json package-lock.json ./
-RUN npm ci
-
 COPY . .
 
 CMD ["scripts/ci.sh"]

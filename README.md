@@ -82,9 +82,8 @@ to be installed on the host:
     podman build -f Dockerfile.ci -t tree-sitter-boo-ci .
     podman run --rm -v "$PWD/../boo:/work/boo:ro" tree-sitter-boo-ci
 
-Without the mount it clones the compiler itself. The base is glibc rather than
-musl because the published tree-sitter-cli binaries are linked against glibc,
-and building it from source costs minutes.
+Without the mount it clones the compiler itself. tree-sitter-cli comes from apk
+rather than npm, because the published npm binaries are linked against glibc.
 
 ## Helix
 

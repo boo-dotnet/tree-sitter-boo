@@ -5,9 +5,13 @@ set -euo pipefail
 
 ts=${TREE_SITTER:-node_modules/.bin/tree-sitter}
 
+# src/tree_sitter/*.h is the CLI's own runtime header set, not built from
+# grammar.js, and it changes with the CLI version.
+generated=(src/parser.c src/grammar.json src/node-types.json)
+
 "$ts" generate
 
-if ! git diff --exit-code -- src/; then
+if ! git diff --exit-code -- "${generated[@]}"; then
 	echo "src/ is stale. Run: tree-sitter generate" >&2
 	exit 1
 fi

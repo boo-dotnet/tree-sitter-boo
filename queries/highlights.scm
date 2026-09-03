@@ -73,7 +73,7 @@
   "or"
 ] @keyword.operator
 
-(modifier) @keyword.modifier
+(modifier) @keyword.storage.modifier
 
 ; Operators
 
@@ -93,7 +93,7 @@
 
 (comment) @comment
 (integer) @number
-(float) @number.float
+(float) @number
 (timespan) @number
 (boolean) @constant.builtin.boolean
 (null) @constant.builtin

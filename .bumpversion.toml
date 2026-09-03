@@ -1,0 +1,14 @@
+[bumpversion]
+current_version = "0.1.0"
+
+# Editors pin a commit, so neither file reaches them.
+
+[[file]]
+path = "package.json"
+search = '"version": "{current_version}"'
+replace = '"version": "{new_version}"'
+
+[[file]]
+path = "tree-sitter.json"
+search = '"version": "{current_version}"'
+replace = '"version": "{new_version}"'

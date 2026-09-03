@@ -1,0 +1,23 @@
+# Line endings.
+#
+# The repository stores text as LF. Working copies get whatever the platform
+# wants, so Windows checkouts still see CRLF without that reaching a commit.
+#
+# text=auto covers every file, including types nobody has added yet: git decides
+# text or binary by content.
+
+* text=auto
+
+# Files a tool or platform requires to keep one specific ending wherever they
+# are checked out.
+*.sh    text eol=lf
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+*.sln   text eol=crlf
+
+# tree-sitter generates these from grammar.js. Collapse them in diffs and
+# reviews so the hand-written grammar and scanner stay visible.
+src/parser.c        linguist-generated
+src/grammar.json    linguist-generated
+src/node-types.json linguist-generated

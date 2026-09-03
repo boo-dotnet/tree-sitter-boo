@@ -1,0 +1,319 @@
+================================================================================
+Interpolated strings
+================================================================================
+
+s = "hello ${name.upper()} and $other"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (expression_statement
+    (assignment
+      (identifier)
+      (string
+        (double_quoted_string
+          (string_content)
+          (interpolation
+            (call
+              (member_access
+                (identifier)
+                (identifier))
+              (argument_list)))
+          (string_content)
+          (string_content)
+          (string_content))))))
+
+================================================================================
+Closures and callable expressions
+================================================================================
+
+adder = { a, b | return a + b }
+runner = def (n as int):
+	return n
+handlers = { "a": { print("a") }, "b": { print("b") } }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (expression_statement
+    (assignment
+      (identifier)
+      (closure
+        (parameter
+          (identifier))
+        (parameter
+          (identifier))
+        (return_statement
+          (binary_expression
+            (identifier)
+            (identifier))))))
+  (block_statement
+    (identifier)
+    (callable_expression
+      (parameter_list
+        (parameter
+          (identifier)
+          (simple_type
+            (qualified_name
+              (identifier)))))
+      (block
+        (return_statement
+          (identifier)))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (hash
+        (key_value
+          (string
+            (double_quoted_string
+              (string_content)))
+          (closure
+            (expression_statement
+              (call
+                (identifier)
+                (argument_list
+                  (argument
+                    (string
+                      (double_quoted_string
+                        (string_content)))))))))
+        (key_value
+          (string
+            (double_quoted_string
+              (string_content)))
+          (closure
+            (expression_statement
+              (call
+                (identifier)
+                (argument_list
+                  (argument
+                    (string
+                      (double_quoted_string
+                        (string_content)))))))))))))
+
+================================================================================
+Generators and slices
+================================================================================
+
+squares = [i * i for i in range(10) if i % 2 == 0]
+head = items[:2]
+tail = items[2:]
+step = items[::2]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (expression_statement
+    (assignment
+      (identifier)
+      (list
+        (generator_expression
+          (binary_expression
+            (identifier)
+            (identifier))
+          (declaration
+            (identifier))
+          (call
+            (identifier)
+            (argument_list
+              (argument
+                (integer))))
+          (statement_modifier
+            (binary_expression
+              (binary_expression
+                (identifier)
+                (integer))
+              (integer)))))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (subscript
+        (identifier)
+        (slice
+          (integer)))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (subscript
+        (identifier)
+        (slice
+          (integer)))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (subscript
+        (identifier)
+        (slice
+          (integer))))))
+
+================================================================================
+Macros are outranked by calls
+================================================================================
+
+print "a", "b"
+f(a = 1, b = 2)
+assert o1 = d2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (macro_call
+    (identifier)
+    (string
+      (double_quoted_string
+        (string_content)))
+    (string
+      (double_quoted_string
+        (string_content))))
+  (expression_statement
+    (call
+      (identifier)
+      (argument_list
+        (argument
+          (assignment
+            (identifier)
+            (integer)))
+        (argument
+          (assignment
+            (identifier)
+            (integer))))))
+  (macro_call
+    (identifier)
+    (assignment
+      (identifier)
+      (identifier))))
+
+================================================================================
+Safe access and type operators
+================================================================================
+
+x = a?.b?[0]
+y = value as string
+z = value cast string
+ok = value isa Exception
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (expression_statement
+    (assignment
+      (identifier)
+      (subscript
+        (member_access
+          (identifier)
+          (identifier))
+        (slice
+          (integer)))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (type_conversion
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier))))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (type_conversion
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier))))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (type_test
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))))))
+
+================================================================================
+Quasi-quotes and splices
+================================================================================
+
+def f(name):
+	yield [|
+		public def foo():
+			return $name
+	|]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list
+      (parameter
+        (identifier)))
+    (block
+      (yield_statement
+        (quasi_quote
+          (method
+            (modifier)
+            (identifier)
+            (parameter_list)
+            (block
+              (return_statement
+                (splice
+                  (identifier))))))))))
+
+================================================================================
+Literals
+================================================================================
+
+a = 0xFFl
+b = 1_000
+c = 3.14f
+d = 5s
+e = /ab+c/i
+g = @/a b/
+h = 'single'
+i = `backtick`
+j = char('x')
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (expression_statement
+    (assignment
+      (identifier)
+      (integer)))
+  (expression_statement
+    (assignment
+      (identifier)
+      (integer)))
+  (expression_statement
+    (assignment
+      (identifier)
+      (float)))
+  (expression_statement
+    (assignment
+      (identifier)
+      (timespan)))
+  (expression_statement
+    (assignment
+      (identifier)
+      (regex)))
+  (expression_statement
+    (assignment
+      (identifier)
+      (regex)))
+  (expression_statement
+    (assignment
+      (identifier)
+      (string
+        (single_quoted_string
+          (string_content)))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (string
+        (backtick_string))))
+  (expression_statement
+    (assignment
+      (identifier)
+      (char_literal
+        (string
+          (single_quoted_string
+            (string_content)))))))

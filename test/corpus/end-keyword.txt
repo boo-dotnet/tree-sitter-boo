@@ -1,0 +1,147 @@
+================================================================================
+Empty class body closed by end
+================================================================================
+
+public class T1[of T(IEnumerable)]:
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_definition
+    (modifier)
+    (identifier)
+    (generic_parameters
+      (generic_parameter
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))))
+    (type_body)))
+
+================================================================================
+Members with empty bodies, each closed by end
+================================================================================
+
+class Foo:
+
+	new def Bar():
+	end
+
+	new public def Bar():
+	end
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_definition
+    (identifier)
+    (type_body
+      (method
+        (modifier)
+        (identifier)
+        (parameter_list)
+        (block))
+      (method
+        (modifier)
+        (modifier)
+        (identifier)
+        (parameter_list)
+        (block)))))
+
+================================================================================
+end closes the innermost block
+================================================================================
+
+class A:
+	def f():
+		pass
+	end
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_definition
+    (identifier)
+    (type_body
+      (method
+        (identifier)
+        (parameter_list)
+        (block
+          (pass_statement))))))
+
+================================================================================
+Indented body then end at the header indent
+================================================================================
+
+def f():
+	if x:
+		g()
+	end
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list)
+    (block
+      (if_statement
+        (identifier)
+        (block
+          (expression_statement
+            (call
+              (identifier)
+              (argument_list))))))))
+
+================================================================================
+Enum closed by end
+================================================================================
+
+enum Color:
+	Red
+	Green
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (enum_definition
+    (identifier)
+    (enum_body
+      (enum_member
+        (identifier))
+      (enum_member
+        (identifier)))))
+
+================================================================================
+end is still an ordinary identifier
+================================================================================
+
+def f():
+	start = 1
+	end = 2
+	return end - start
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list)
+    (block
+      (expression_statement
+        (assignment
+          (identifier)
+          (integer)))
+      (expression_statement
+        (assignment
+          (identifier)
+          (integer)))
+      (return_statement
+        (binary_expression
+          (identifier)
+          (identifier))))))

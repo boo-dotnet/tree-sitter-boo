@@ -1,0 +1,25 @@
+{
+  "name": "tree-sitter-boo",
+  "version": "0.1.0",
+  "description": "Boo grammar for tree-sitter",
+  "license": "MIT",
+  "keywords": ["parser", "boo", "tree-sitter"],
+  "files": ["grammar.js", "queries/*", "src/**", "tree-sitter.json"],
+  "tree-sitter": [
+    {
+      "scope": "source.boo",
+      "file-types": ["boo"],
+      "injection-regex": "^boo$",
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm",
+      "locals": "queries/locals.scm"
+    }
+  ],
+  "devDependencies": {
+    "tree-sitter-cli": "^0.27.0"
+  },
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test"
+  }
+}

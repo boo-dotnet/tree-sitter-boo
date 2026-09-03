@@ -1,0 +1,11 @@
+node_modules/
+build/
+*.wasm
+
+# dotfiles have to be explicitly committed
+.*
+!.github/
+!.gitattributes
+!.gitignore
+!.editorconfig
+!.bumpversion.toml

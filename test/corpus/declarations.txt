@@ -1,0 +1,219 @@
+================================================================================
+Class with base types and members
+================================================================================
+
+class Greeter(IDisposable, ICloneable):
+	_name as string
+
+	def constructor(name as string):
+		_name = name
+
+	def Dispose():
+		pass
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_definition
+    (identifier)
+    (base_types
+      (simple_type
+        (qualified_name
+          (identifier)))
+      (simple_type
+        (qualified_name
+          (identifier))))
+    (type_body
+      (field
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier))))
+      (constructor
+        (parameter_list
+          (parameter
+            (identifier)
+            (simple_type
+              (qualified_name
+                (identifier)))))
+        (block
+          (expression_statement
+            (assignment
+              (identifier)
+              (identifier)))))
+      (method
+        (identifier)
+        (parameter_list)
+        (block
+          (pass_statement))))))
+
+================================================================================
+Property accessors
+================================================================================
+
+class Foo:
+	Name as string:
+		get:
+			return _name
+		set:
+			_name = value
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_definition
+    (identifier)
+    (type_body
+      (property_definition
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))
+        (accessor_body
+          (accessor
+            (block
+              (return_statement
+                (identifier))))
+          (accessor
+            (block
+              (expression_statement
+                (assignment
+                  (identifier)
+                  (identifier))))))))))
+
+================================================================================
+Enum
+================================================================================
+
+enum Color:
+	Red = 1
+	Green
+	Blue
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (enum_definition
+    (identifier)
+    (enum_body
+      (enum_member
+        (identifier)
+        (integer))
+      (enum_member
+        (identifier))
+      (enum_member
+        (identifier)))))
+
+================================================================================
+Attributes and modifiers
+================================================================================
+
+[TestFixture]
+class Tests:
+	[Test]
+	public static def Run() as bool:
+		return true
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_definition
+    (attribute_list
+      (attribute
+        (qualified_name
+          (identifier))))
+    (identifier)
+    (type_body
+      (method
+        (attribute_list
+          (attribute
+            (qualified_name
+              (identifier))))
+        (modifier)
+        (modifier)
+        (identifier)
+        (parameter_list)
+        (return_type
+          (simple_type
+            (qualified_name
+              (identifier))))
+        (block
+          (return_statement
+            (boolean)))))))
+
+================================================================================
+Generic type with constraints
+================================================================================
+
+class Box[of T(IComparable)]:
+	Value as T:
+		get:
+			return _v
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_definition
+    (identifier)
+    (generic_parameters
+      (generic_parameter
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))))
+    (type_body
+      (property_definition
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))
+        (accessor_body
+          (accessor
+            (block
+              (return_statement
+                (identifier)))))))))
+
+================================================================================
+Callable and interface
+================================================================================
+
+callable Handler(sender as object) as void
+
+interface IShape:
+	def Area() as double
+
+	Sides as int:
+		get
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (callable_definition
+    (identifier)
+    (parameter_list
+      (parameter
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))))
+    (return_type
+      (simple_type
+        (qualified_name
+          (identifier)))))
+  (interface_definition
+    (identifier)
+    (type_body
+      (method
+        (identifier)
+        (parameter_list)
+        (return_type
+          (simple_type
+            (qualified_name
+              (identifier)))))
+      (property_definition
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))
+        (accessor_body
+          (accessor))))))

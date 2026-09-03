@@ -1,0 +1,146 @@
+================================================================================
+Comment at column zero does not close the enclosing block
+================================================================================
+
+def f():
+	if x:
+		g()
+// commented-out code
+	return 1
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list)
+    (block
+      (if_statement
+        (identifier)
+        (block
+          (expression_statement
+            (call
+              (identifier)
+              (argument_list)))))
+      (comment)
+      (return_statement
+        (integer)))))
+
+================================================================================
+Comment indented past the block still does not open one
+================================================================================
+
+def f():
+	g()
+		# over-indented note
+	h()
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list)
+    (block
+      (expression_statement
+        (call
+          (identifier)
+          (argument_list)))
+      (comment)
+      (expression_statement
+        (call
+          (identifier)
+          (argument_list))))))
+
+================================================================================
+Regex literal as the first token on a line
+================================================================================
+
+x = 1
+/ab+c/.Match(s)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (expression_statement
+    (assignment
+      (identifier)
+      (integer)))
+  (expression_statement
+    (call
+      (member_access
+        (regex)
+        (identifier))
+      (argument_list
+        (argument
+          (identifier))))))
+
+================================================================================
+Division is not a regex
+================================================================================
+
+x = a / b
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (expression_statement
+    (assignment
+      (identifier)
+      (binary_expression
+        (identifier)
+        (identifier)))))
+
+================================================================================
+Line continuation joins lines
+================================================================================
+
+x = 1 + \
+    2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (expression_statement
+    (assignment
+      (identifier)
+      (binary_expression
+        (integer)
+        (line_continuation)
+        (integer)))))
+
+================================================================================
+Statements whose tail is a block need no terminator
+================================================================================
+
+c = def:
+	x = 1
+f() do:
+	y = 2
+g()
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (block_statement
+    (identifier)
+    (callable_expression
+      (block
+        (expression_statement
+          (assignment
+            (identifier)
+            (integer))))))
+  (block_statement
+    (call
+      (identifier)
+      (argument_list))
+    (callable_expression
+      (block
+        (expression_statement
+          (assignment
+            (identifier)
+            (integer))))))
+  (expression_statement
+    (call
+      (identifier)
+      (argument_list))))

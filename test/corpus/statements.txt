@@ -1,0 +1,200 @@
+================================================================================
+Indented and single-line blocks
+================================================================================
+
+def f(n as int):
+	if n > 0:
+		print n
+	elif n == 0: print "zero"
+	else:
+		pass
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list
+      (parameter
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))))
+    (block
+      (if_statement
+        (binary_expression
+          (identifier)
+          (integer))
+        (block
+          (macro_call
+            (identifier)
+            (identifier)))
+        (elif_clause
+          (binary_expression
+            (identifier)
+            (integer))
+          (block
+            (macro_call
+              (identifier)
+              (string
+                (double_quoted_string
+                  (string_content))))))
+        (else_clause
+          (block
+            (pass_statement)))))))
+
+================================================================================
+Loops with or and then clauses
+================================================================================
+
+def f(xs):
+	for x in xs:
+		print x
+	or:
+		print "empty"
+	then:
+		print "done"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list
+      (parameter
+        (identifier)))
+    (block
+      (for_statement
+        (declaration
+          (identifier))
+        (identifier)
+        (block
+          (macro_call
+            (identifier)
+            (identifier)))
+        (or_clause
+          (block
+            (macro_call
+              (identifier)
+              (string
+                (double_quoted_string
+                  (string_content))))))
+        (then_clause
+          (block
+            (macro_call
+              (identifier)
+              (string
+                (double_quoted_string
+                  (string_content))))))))))
+
+================================================================================
+Try except failure ensure
+================================================================================
+
+def f():
+	try:
+		g()
+	except e as IOException if retry:
+		print e
+	failure:
+		print "failed"
+	ensure:
+		close()
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list)
+    (block
+      (try_statement
+        (block
+          (expression_statement
+            (call
+              (identifier)
+              (argument_list))))
+        (except_clause
+          (identifier)
+          (simple_type
+            (qualified_name
+              (identifier)))
+          (identifier)
+          (block
+            (macro_call
+              (identifier)
+              (identifier))))
+        (failure_clause
+          (block
+            (macro_call
+              (identifier)
+              (string
+                (double_quoted_string
+                  (string_content))))))
+        (ensure_clause
+          (block
+            (expression_statement
+              (call
+                (identifier)
+                (argument_list)))))))))
+
+================================================================================
+Statement modifiers and unpacking
+================================================================================
+
+def f(xs):
+	return 1 if xs
+	a, b = xs
+	yield a unless b
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list
+      (parameter
+        (identifier)))
+    (block
+      (return_statement
+        (integer))
+      (statement_modifier
+        (identifier))
+      (unpack_statement
+        (declaration
+          (identifier))
+        (declaration
+          (identifier))
+        (identifier))
+      (yield_statement
+        (identifier))
+      (statement_modifier
+        (identifier)))))
+
+================================================================================
+Comment-only lines keep the block open
+================================================================================
+
+def f():
+	if x:
+		g()
+# commented-out code at column zero
+	return 1
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list)
+    (block
+      (if_statement
+        (identifier)
+        (block
+          (expression_statement
+            (call
+              (identifier)
+              (argument_list)))))
+      (comment)
+      (return_statement
+        (integer)))))

@@ -1,0 +1,21 @@
+{
+  "grammars": [
+    {
+      "name": "boo",
+      "camelcase": "Boo",
+      "scope": "source.boo",
+      "path": ".",
+      "file-types": ["boo"],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm",
+      "locals": "queries/locals.scm",
+      "injection-regex": "^boo$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Boo grammar for tree-sitter",
+    "authors": [{ "name": "Boo .NET" }]
+  }
+}

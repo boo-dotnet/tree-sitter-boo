@@ -1,0 +1,31 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# The compiler rejects a Boo file that mixes tabs and spaces.
+[*.boo]
+indent_style = tab
+tab_width = 4
+
+# Expected parse trees, with Boo source embedded in them.
+[test/corpus/*.txt]
+indent_style = tab
+tab_width = 4
+trim_trailing_whitespace = false
+
+[*.{c,h}]
+indent_size = 2
+
+# Two trailing spaces is a line break in Markdown.
+[*.md]
+trim_trailing_whitespace = false
+
+# tree-sitter writes these from grammar.js.
+[src/{parser.c,grammar.json,node-types.json}]
+generated_code = true

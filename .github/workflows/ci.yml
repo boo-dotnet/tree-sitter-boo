@@ -60,9 +60,14 @@ jobs:
 
       - run: npm ci
 
-      # The grammar tracks current syntax, so this wants the tip of master.
-      - name: Clone the compiler for its .boo corpus
-        run: git clone --depth 1 https://github.com/mattmc3/boo boo
+      # Pinned so a new compiler test cannot fail this job on unrelated work.
+      # Bump deliberately, with the parse rate rechecked in the same commit.
+      - name: Check out the compiler for its .boo corpus
+        uses: actions/checkout@v7
+        with:
+          repository: boo-lang/boo
+          ref: 26a0dfa2073b64cf43766dd6df2b3680ec7597dc
+          path: boo
 
       - name: Parse rate
         run: ./scripts/parse-rate.sh boo

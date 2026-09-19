@@ -14,6 +14,7 @@
   "enum"
   "event"
   "final"
+  "from"
   "get"
   "import"
   "interface"
@@ -161,5 +162,6 @@
 ; Helix themes @namespace, Neovim themes @module. Each ignores the other.
 (namespace_directive name: (qualified_name (identifier) @namespace @module))
 (import_directive name: (qualified_name (identifier) @namespace @module))
+(import_directive source: (qualified_name (identifier) @namespace @module))
 
 (identifier) @variable

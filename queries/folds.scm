@@ -9,4 +9,5 @@
   (quasi_quote)
   (parameter_list)
   (argument_list)
+  (triple_quoted_string)
 ] @fold

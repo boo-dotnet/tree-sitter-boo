@@ -93,6 +93,7 @@
 ; Literals
 
 (comment) @comment
+[ (region_start) (region_end) ] @comment
 (integer) @number
 (float) @number
 (timespan) @number

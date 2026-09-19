@@ -144,3 +144,30 @@ g()
     (call
       (identifier)
       (argument_list))))
+
+================================================================================
+Region markers wrap module items
+================================================================================
+
+#region license
+
+import System
+
+#endregion
+
+class Foo:
+	pass
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (region
+    (region_start)
+    (import_directive
+      (qualified_name
+        (identifier)))
+    (region_end))
+  (class_definition
+    (identifier)
+    (type_body
+      (pass_statement))))

@@ -130,6 +130,7 @@ module.exports = grammar({
     ),
 
     _module_item: $ => choice(
+      $.region,
       $.namespace_directive,
       $.import_directive,
       $.assembly_attribute,
@@ -145,6 +146,17 @@ module.exports = grammar({
       $.callable_definition,
       $.method,
     ),
+
+    // A region is trivia to the compiler, but an editor folds it, so the
+    // markers outrank the comment token they would otherwise lex as.
+    region: $ => seq(
+      $.region_start,
+      repeat($._module_item),
+      $.region_end,
+    ),
+
+    region_start: $ => token(prec(1, seq('#region', /[^\r\n]*/))),
+    region_end: $ => token(prec(1, seq('#endregion', /[^\r\n]*/))),
 
     // -- directives ------------------------------------------------------
 

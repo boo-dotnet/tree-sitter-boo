@@ -10,4 +10,5 @@
   (parameter_list)
   (argument_list)
   (triple_quoted_string)
+  (region)
 ] @fold

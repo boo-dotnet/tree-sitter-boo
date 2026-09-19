@@ -211,6 +211,7 @@ module.exports = grammar({
     class_definition: $ => seq(
       optional($._attributes),
       repeat($.modifier),
+      optional('ref'),
       field('kind', choice('class', 'struct')),
       field('name', choice($.identifier, $.splice)),
       optional($.generic_parameters),
@@ -221,6 +222,7 @@ module.exports = grammar({
     interface_definition: $ => seq(
       optional($._attributes),
       repeat($.modifier),
+      optional('ref'),
       'interface',
       field('name', choice($.identifier, $.splice)),
       optional($.generic_parameters),
@@ -231,6 +233,7 @@ module.exports = grammar({
     enum_definition: $ => seq(
       optional($._attributes),
       repeat($.modifier),
+      optional('ref'),
       'enum',
       field('name', $.identifier),
       field('body', $.enum_body),
@@ -239,6 +242,7 @@ module.exports = grammar({
     callable_definition: $ => seq(
       optional($._attributes),
       repeat($.modifier),
+      optional('ref'),
       'callable',
       field('name', $.identifier),
       optional($.generic_parameters),

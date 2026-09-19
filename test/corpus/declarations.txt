@@ -246,3 +246,27 @@ def greet(name as string, greeting as string = "Hi"):
             (string_content)))))
     (block
       (pass_statement))))
+
+================================================================================
+Ref struct
+================================================================================
+
+ref struct Buffer(INamed):
+	public Length as int
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_definition
+    (identifier)
+    (base_types
+      (simple_type
+        (qualified_name
+          (identifier))))
+    (type_body
+      (field
+        (modifier)
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))))))

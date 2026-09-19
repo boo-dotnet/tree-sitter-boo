@@ -150,8 +150,9 @@
 ; References
 
 (attribute name: (qualified_name (identifier) @attribute))
-(macro_statement name: (identifier) @function.macro)
-(macro_call name: (identifier) @function.macro)
+; Zed resolves right to left, so function.macro wins where a theme defines it.
+(macro_statement name: (identifier) @function @function.macro)
+(macro_call name: (identifier) @function @function.macro)
 
 (call function: (identifier) @function)
 (call function: (member_access member: (identifier) @function.method))

@@ -370,6 +370,7 @@ module.exports = grammar({
       optional(choice('*', 'ref')),
       field('name', choice($.identifier, $.splice)),
       optional(seq('as', field('type', $._type))),
+      optional(seq('=', field('default', $._expression))),
     ),
 
     event_declaration: $ => seq(

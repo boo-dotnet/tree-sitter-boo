@@ -217,3 +217,32 @@ interface IShape:
             (identifier)))
         (accessor_body
           (accessor))))))
+
+================================================================================
+Parameter with a default value
+================================================================================
+
+def greet(name as string, greeting as string = "Hi"):
+	pass
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (method
+    (identifier)
+    (parameter_list
+      (parameter
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier))))
+      (parameter
+        (identifier)
+        (simple_type
+          (qualified_name
+            (identifier)))
+        (string
+          (double_quoted_string
+            (string_content)))))
+    (block
+      (pass_statement))))

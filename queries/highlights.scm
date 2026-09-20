@@ -151,7 +151,7 @@
 ; References
 
 (attribute name: (qualified_name (identifier) @attribute))
-; Zed resolves right to left, so function.macro wins where a theme defines it.
+; The last capture wins, so the specific name trails the fallback.
 (macro_statement name: (identifier) @function @function.macro)
 (macro_call name: (identifier) @function @function.macro)
 
@@ -165,5 +165,3 @@
 (namespace_directive name: (qualified_name (identifier) @namespace @module))
 (import_directive name: (qualified_name (identifier) @namespace @module))
 (import_directive source: (qualified_name (identifier) @namespace @module))
-
-(identifier) @variable
